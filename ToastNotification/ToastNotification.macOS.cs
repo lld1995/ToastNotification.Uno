@@ -1,6 +1,7 @@
-﻿#if __MACOS__
+﻿#if __MACCATALYST__
 using AppKit;
 using Foundation;
+using Microsoft.UI.Xaml;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -28,12 +29,12 @@ namespace Uno.Extras
 
         public async Task Show()
         {
-            _legacyBehavior = _legacyBehavior ?? CheckNewApiVersion();
-            if ((bool)_legacyBehavior)
-            {
-                await ShowLegacy();
-                return;
-            }
+            //_legacyBehavior = _legacyBehavior ?? CheckNewApiVersion();
+            //if ((bool)_legacyBehavior)
+            //{
+            //    await ShowLegacy();
+            //    return;
+            //}
 
 #region Sharable With iOS
 #region Untested Code
@@ -159,111 +160,111 @@ namespace Uno.Extras
 
         static ToastNotification()
         {
-            var instance = NSUserNotificationCenter.DefaultUserNotificationCenter;
-            // Should allow showing when application is still in focus, else 
-            // the behavior is inconsistent with other platforms (and annoying for 
-            // new devs).
-            instance.ShouldPresentNotification = (center, notification) => true;
-            instance.DidActivateNotification += System_DidActivateNotification;
+            //var instance = NSUserNotificationCenter.DefaultUserNotificationCenter;
+            //// Should allow showing when application is still in focus, else 
+            //// the behavior is inconsistent with other platforms (and annoying for 
+            //// new devs).
+            //instance.ShouldPresentNotification = (center, notification) => true;
+            //instance.DidActivateNotification += System_DidActivateNotification;
 
-#region Sharable with iOS
-#region Untested Code
+            #region Sharable with iOS
+            #region Untested Code
             var currentCenter = UNUserNotificationCenter.Current;
             currentCenter.Delegate = new NotificationCenterDelegates();
-#endregion
-#endregion
+            #endregion
+            #endregion
         }
 
 #region Legacy Implementation
-        /// <summary>
-        /// Shows a native Mac OS notification
-        /// using a deprecated implementation.
-        /// </summary>
-        public async Task ShowLegacy()
-        {
-            var notification = new NSUserNotification
-            {
-                Title = Title,
-                InformativeText = Message
-            };
+        ///// <summary>
+        ///// Shows a native Mac OS notification
+        ///// using a deprecated implementation.
+        ///// </summary>
+        //public async Task ShowLegacy()
+        //{
+        //    var notification = new NSUserNotification
+        //    {
+        //        Title = Title,
+        //        InformativeText = Message
+        //    };
 
-            if (AppLogoOverride != null)
-            {
-                // Just get stream for all cases, handling the ms-appx:// stuff is tricky.
-                var str = await AppLogoOverride.GetDataUrlAsync().ConfigureAwait(false);
-                int i = "data:;base64,".Length;
-                str = str.Substring(i);
+        //    if (AppLogoOverride != null)
+        //    {
+        //        // Just get stream for all cases, handling the ms-appx:// stuff is tricky.
+        //        var str = await AppLogoOverride.GetDataUrlAsync().ConfigureAwait(false);
+        //        int i = "data:;base64,".Length;
+        //        str = str.Substring(i);
 
-                var data = new NSData(str, NSDataBase64DecodingOptions.None);
-                notification.ContentImage = new AppKit.NSImage(data);
-            }
+        //        var data = new NSData(str, NSDataBase64DecodingOptions.None);
+        //        notification.ContentImage = new AppKit.NSImage(data);
+        //    }
 
-            if (ToastButtons != null)
-            {
-                var first = ToastButtons.FirstOrDefault();
-                if (first != null)
-                {
-                    notification.HasActionButton = true;
-                    notification.ActionButtonTitle = first.Content;
-                }
-                // This is buggy, doesn't seem to work.
-                // https://stackoverflow.com/questions/31447882/property-additionalactions-of-nsusernotification-seems-not-working
-                // It does work on Big Sur?
-                if (ToastButtons.Count() >= 2)
-                {
-                    notification.AdditionalActions =
-                        ToastButtons
-                            .Skip(1)
-                            .Select(button =>
-                            {
-                                return NSUserNotificationAction.GetAction(GetAppropriateArgument(button), button.Content);
-                            })
-                            .ToArray();
-                }
-                notification.UserInfo = new NSMutableDictionary<NSString, NSString>
-                {
-                    { new NSString("DefaultArgs"), new NSString("foreground," + Arguments) },
-                    { new NSString("ActionButtonArgs"), (first != null) ? new NSString(GetAppropriateArgument(first)) : new NSString(string.Empty) }
-                };
-            }
-            else
-            {
-                notification.UserInfo = new NSMutableDictionary<NSString, NSString>
-                {
-                    { new NSString("DefaultArgs"), new NSString("foreground," + Arguments) }
-                };
-            }
+        //    if (ToastButtons != null)
+        //    {
+        //        var first = ToastButtons.FirstOrDefault();
+        //        if (first != null)
+        //        {
+        //            notification.HasActionButton = true;
+        //            notification.ActionButtonTitle = first.Content;
+        //        }
+        //        // This is buggy, doesn't seem to work.
+        //        // https://stackoverflow.com/questions/31447882/property-additionalactions-of-nsusernotification-seems-not-working
+        //        // It does work on Big Sur?
+        //        if (ToastButtons.Count() >= 2)
+        //        {
+        //            notification.AdditionalActions =
+        //                ToastButtons
+        //                    .Skip(1)
+        //                    .Select(button =>
+        //                    {
+        //                        return NSUserNotificationAction.GetAction(GetAppropriateArgument(button), button.Content);
+        //                    })
+        //                    .ToArray();
+        //        }
+        //        notification.UserInfo = new NSMutableDictionary<NSString, NSString>
+        //        {
+        //            { new NSString("DefaultArgs"), new NSString("foreground," + Arguments) },
+        //            { new NSString("ActionButtonArgs"), (first != null) ? new NSString(GetAppropriateArgument(first)) : new NSString(string.Empty) }
+        //        };
+        //    }
+        //    else
+        //    {
+        //        notification.UserInfo = new NSMutableDictionary<NSString, NSString>
+        //        {
+        //            { new NSString("DefaultArgs"), new NSString("foreground," + Arguments) }
+        //        };
+        //    }
 
-            var center = NSUserNotificationCenter.DefaultUserNotificationCenter;
-            center.DeliverNotification(notification);
-        }
+        //    var center = NSUserNotificationCenter.DefaultUserNotificationCenter;
+        //    center.DeliverNotification(notification);
+        //}
 
-        private static void System_DidActivateNotification(object sender, UNCDidActivateNotificationEventArgs e)
-        {
-            HandleNotification(e.Notification);
-        }
+        //private static void System_DidActivateNotification(object sender, UNCDidActivateNotificationEventArgs e)
+        //{
+        //    HandleNotification(e.Notification);
+        //}
         
-        /// <summary>
-        /// Triggers the notification handler. This method is purposedly left public so that the user
-        /// can handle notifications when the application starts.
-        /// See <see cref="https://developer.apple.com/documentation/foundation/nsusernotificationcenterdelegate/1418378-usernotificationcenter"/>
-        /// for more details.
-        /// </summary>
-        public static void HandleNotification(NSUserNotification notification)
-        {
-            switch (notification.ActivationType)
-            {
-                case NSUserNotificationActivationType.ActionButtonClicked:
-                    HandleArgument(notification.UserInfo["ActionButtonArgs"] as NSString ?? "foreground,");
-                    break;
-                case NSUserNotificationActivationType.AdditionalActionClicked:
-                    HandleArgument(notification.AdditionalActivationAction.Identifier);
-                    break;
-                case NSUserNotificationActivationType.ContentsClicked:
-                    HandleArgument(notification.UserInfo["DefaultArgs"] as NSString ?? "foreground,");
-                    break;
-            }
-        }
+        ///// <summary>
+        ///// Triggers the notification handler. This method is purposedly left public so that the user
+        ///// can handle notifications when the application starts.
+        ///// See <see cref="https://developer.apple.com/documentation/foundation/nsusernotificationcenterdelegate/1418378-usernotificationcenter"/>
+        ///// for more details.
+        ///// </summary>
+        //public static void HandleNotification(NSUserNotification notification)
+        //{
+        //    switch (notification.ActivationType)
+        //    {
+        //        case NSUserNotificationActivationType.ActionButtonClicked:
+        //            HandleArgument(notification.UserInfo["ActionButtonArgs"] as NSString ?? "foreground,");
+        //            break;
+        //        case NSUserNotificationActivationType.AdditionalActionClicked:
+        //            HandleArgument(notification.AdditionalActivationAction.Identifier);
+        //            break;
+        //        case NSUserNotificationActivationType.ContentsClicked:
+        //            HandleArgument(notification.UserInfo["DefaultArgs"] as NSString ?? "foreground,");
+        //            break;
+        //    }
+        //}
 #endregion
 
         private static bool CheckNewApiVersion()
@@ -295,46 +296,46 @@ namespace Uno.Extras
         }
 
         // MacOS's Activation needs some more care.
-        private static void ActivateForeground(string argument)
-        {
-            FocusAppAsync().ContinueWith(async (task) =>
-            {
-                var app = Windows.UI.Xaml.Application.Current;
+        //private static void ActivateForeground(string argument)
+        //{
+        //    FocusAppAsync().ContinueWith(async (task) =>
+        //    {
+        //        var app = Application.Current;
 
-                var toastActivatedEventArgs = Reflection.Construct<ToastNotificationActivatedEventArgs>(argument);
-                System.Diagnostics.Debug.WriteLine($"{toastActivatedEventArgs.Argument == null}");
-                await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
-                () =>
-                {
-                    app.Invoke("OnActivated", new[] { toastActivatedEventArgs });
-                });
-            });
-        }
+        //        var toastActivatedEventArgs = Reflection.Construct<ToastNotificationActivatedEventArgs>(argument);
+        //        System.Diagnostics.Debug.WriteLine($"{toastActivatedEventArgs.Argument == null}");
+        //        await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
+        //        () =>
+        //        {
+        //            app.Invoke("OnActivated", new[] { toastActivatedEventArgs });
+        //        });
+        //    });
+        //}
 
-        private static async Task FocusAppAsync()
-        {
-            // New UserNotifications API should automatically focus our application.
-            if (!(bool)_legacyBehavior)
-            {
-                return;
-            }
-            var currentApp = NSApplication.SharedApplication;
-            currentApp.ActivateIgnoringOtherApps(true);
+        //private static async Task FocusAppAsync()
+        //{
+        //    // New UserNotifications API should automatically focus our application.
+        //    if (!(bool)_legacyBehavior)
+        //    {
+        //        return;
+        //    }
+        //    var currentApp = NSApplication.SharedApplication;
+        //    currentApp.ActivateIgnoringOtherApps(true);
 
-            while (!currentApp.Active)
-            {
-                System.Diagnostics.Debug.WriteLine("Waiting for current window to activate...");
-                // To avoid a UI deadlock, sleep for a while to allow 
-                // other events to proceed.
-                await Task.Delay(100).ConfigureAwait(true);
-            }
+        //    while (!currentApp.Active)
+        //    {
+        //        System.Diagnostics.Debug.WriteLine("Waiting for current window to activate...");
+        //        // To avoid a UI deadlock, sleep for a while to allow 
+        //        // other events to proceed.
+        //        await Task.Delay(100).ConfigureAwait(true);
+        //    }
 
-            // currentApp.MainWindow is null and does not work.
-            // The Uno Platform app should have at least one window,
-            // (and only one window!)
-            // so this function should be safe.
-            currentApp.DangerousWindows[0].MakeKeyAndOrderFront(null);
-        }
+        //    // currentApp.MainWindow is null and does not work.
+        //    // The Uno Platform app should have at least one window,
+        //    // (and only one window!)
+        //    // so this function should be safe.
+        //    currentApp.DangerousWindows[0].MakeKeyAndOrderFront(null);
+        //}
 
 #region Sharable With iOS
 #region Untested Code

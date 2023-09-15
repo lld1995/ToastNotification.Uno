@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "ToastNotification": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "WINRT": "1"
+      }
+    }
+  }
+}

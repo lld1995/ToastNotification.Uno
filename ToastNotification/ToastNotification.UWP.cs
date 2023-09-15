@@ -1,4 +1,4 @@
-﻿#if NETFX_CORE
+﻿#if WINRT || WINDOWS_UWP
 using Microsoft.Toolkit.Uwp.Notifications;
 using System;
 using System.Collections.Generic;
@@ -7,14 +7,13 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Background;
+using Windows.Data.Xml.Dom;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Graphics.Imaging;
 using Windows.Storage;
 using Windows.UI.Notifications;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Markup;
-using Windows.UI.Xaml.Media.Imaging;
 using UwpNot = Microsoft.Toolkit.Uwp.Notifications;
 
 namespace Uno.Extras
@@ -58,8 +57,21 @@ namespace Uno.Extras
                 builder.AddArgument(kvp.Key, kvp.Value);
             }
 
-            _tcs = new TaskCompletionSource<object>();
+            //try
+            //{
+            //    var doc = new XmlDocument();
+            //    doc.LoadXml(builder.GetToastContent().GetContent());
+            //    var toast = new Windows.UI.Notifications.ToastNotification(doc);
+            //    var notify = ToastNotificationManager.CreateToastNotifier();
+            //    notify.Show(toast);
+            //}
+            //catch (Exception e)
+            //{
 
+            //}
+
+
+            _tcs = new TaskCompletionSource<object>();
             builder.Show(t =>
             {
                 TypedEventHandler<Windows.UI.Notifications.ToastNotification, ToastDismissedEventArgs> handler = (sender, args) => { };
@@ -70,7 +82,6 @@ namespace Uno.Extras
                 };
                 t.Dismissed += handler;
             });
-
             await _tcs.Task;
         }
 

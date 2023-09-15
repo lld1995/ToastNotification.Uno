@@ -1,5 +1,4 @@
 ﻿// For lower UWP targets, this file causes compilation errors.
-#if !NETFX_CORE
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -117,4 +116,3 @@ namespace Uno.Extras
         }
     }
 }
-#endif

@@ -12,7 +12,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Uno.UI;
-using Windows.UI.Xaml.Media;
 
 namespace Uno.Extras
 {

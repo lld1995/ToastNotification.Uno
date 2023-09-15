@@ -4,12 +4,7 @@ using Android.Content;
 using Android.OS;
 using Android.Runtime;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Uno.UI;
-using Windows.ApplicationModel.Activation;
 using Windows.System;
 
 namespace Uno.Extras

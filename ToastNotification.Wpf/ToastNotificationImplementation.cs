@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using Microsoft.UI.Xaml;
+using Microsoft.Win32;
 using Notification.FrameworkDependent;
 using Notification.Natives;
 using System;
@@ -13,7 +14,8 @@ using System.Threading.Tasks;
 using Windows.ApplicationModel.Activation;
 using Windows.System;
 using Windows.UI.Core;
-using Windows.UI.Xaml;
+
+
 
 namespace Uno.Extras
 {

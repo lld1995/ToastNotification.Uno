@@ -1,10 +1,8 @@
-﻿using System;
+﻿using Microsoft.UI.Xaml;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
 using Windows.ApplicationModel.Activation;
-using Windows.UI.Xaml.Media.Imaging;
 
 namespace Uno.Extras
 {
@@ -110,12 +108,12 @@ namespace Uno.Extras
         // The region below uses Reflection to manually invoke the application 
         // lifecycle callbacks for Uno targets. This is not applicable for 
         // UWP and also causes compilation errors for lower targets.
-#if !NETFX_CORE
+#if __IOS__ || __ANDROID__ || __MACCATALYST__
         internal static void ActivateForeground(string argument, Action FocusApp = null)
         {
             FocusApp();
 
-            var app = Windows.UI.Xaml.Application.Current;
+            var app = Application.Current;
 
             var toastActivatedEventArgs = Reflection.Construct<ToastNotificationActivatedEventArgs>(argument);
             System.Diagnostics.Debug.WriteLine($"{toastActivatedEventArgs.Argument == null}");

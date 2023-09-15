@@ -1,4 +1,4 @@
-﻿#if __IOS__
+﻿#if __IOS__ && !__MACCATALYST__
 using Foundation;
 using System;
 using System.Collections.Generic;
