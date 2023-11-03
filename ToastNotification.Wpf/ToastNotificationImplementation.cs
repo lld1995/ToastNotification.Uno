@@ -194,15 +194,29 @@ namespace Uno.Extras
 
                 notifyManager.BalloonHide += (s, a) =>
                 {
-                    notifyData.RemoveIcon();
-                    innerTcs.SetResult(null);
+                    try
+                    {
+						notifyData.RemoveIcon();
+						innerTcs.SetResult(null);
+					}
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                    }
                 };
 
                 notifyManager.BallonClicked += (s, a) =>
                 {
-                    notifyData.RemoveIcon();
-                    innerTcs.SetResult(null);
-                    _ = ActivateForeground(toast.Arguments);
+					try
+					{
+						notifyData.RemoveIcon();
+						innerTcs.SetResult(null);
+						_ = ActivateForeground(toast.Arguments);
+					}
+					catch (Exception e)
+					{
+						Console.WriteLine(e);
+					}
                 };
 
                 Shell.NotifyIcon(NotificationIconMessage.Modify, notifyData);
