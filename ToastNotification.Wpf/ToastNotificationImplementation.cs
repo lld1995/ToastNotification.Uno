@@ -58,16 +58,21 @@ namespace Uno.Extras
         public static async Task Show(this ToastNotification toast)
         {
             await semaphore.WaitAsync();
-
-            if (toast.ToastButtons == null)
+            try
             {
-                await ShowLegacy(toast);
-            }
-            else
+				if (toast.ToastButtons == null)
+				{
+					await ShowLegacy(toast);
+				}
+				else
+				{
+					await ShowManaged(toast);
+				}
+			}
+            catch (Exception e)
             {
-                await ShowManaged(toast);
+                Console.WriteLine(e);
             }
-
             semaphore.Release();
         }
 
