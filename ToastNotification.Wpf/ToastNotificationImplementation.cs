@@ -157,7 +157,7 @@ namespace Uno.Extras
         /// <param name="toast">ToatsNotification as created in the native library.</param>
         private static async Task ShowLegacy(this ToastNotification toast)
         {
-            Icon icon;
+			Icon icon;
             if (toast.AppLogoOverride != null)
             {
                 var imageStream = await toast.AppLogoOverride.GetStreamAsync().ConfigureAwait(false);
@@ -193,8 +193,12 @@ namespace Uno.Extras
 
                 notifyData.uFlags = NotificationIconFlags.Info | NotificationIconFlags.Icon | NotificationIconFlags.Guid;
                 notifyData.szInfoTitle = toast.Title;
-                notifyData.szInfo = toast.Message;
-                notifyData.dwInfoFlags = NotificationIconInfoFlags.User | NotificationIconInfoFlags.LargeIcon;
+                if (string.IsNullOrEmpty(toast.Message))
+                {
+                    toast.Message = Environment.NewLine;
+				}
+				notifyData.szInfo = toast.Message;
+				notifyData.dwInfoFlags = NotificationIconInfoFlags.User | NotificationIconInfoFlags.LargeIcon;
                 notifyData.hBalloonIcon = icon.Handle;
 
                 notifyManager.BalloonHide += (s, a) =>
