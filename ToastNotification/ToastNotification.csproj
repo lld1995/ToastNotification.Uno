@@ -5,7 +5,7 @@
 	Please see https://github.com/unoplatform/uno/issues/3909 for more details.
 	-->
 	<PropertyGroup>
-		<TargetFrameworks>net7.0;net7.0-ios;net7.0-android;net7.0-maccatalyst</TargetFrameworks>
+		<TargetFrameworks>net8.0;net8.0-ios;net8.0-android;net8.0-maccatalyst</TargetFrameworks>
 		<!-- Ensures the .xr.xml files are generated in a proper layout folder -->
 		<GenerateLibraryLayout>true</GenerateLibraryLayout>
 		<!--<TargetPlatformVersion Condition=" '$(TargetFramework)' == 'uap10.0.15063' ">10.0.19041.0</TargetPlatformVersion>
@@ -33,7 +33,7 @@
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 	</PropertyGroup>
 	<ItemGroup Condition=" '$(TargetFramework)' == 'uap10.0.15063' ">
-		<PackageReference Include="Microsoft.Toolkit.Uwp.Notifications" Version="7.0.2" />
+		<PackageReference Include="Microsoft.Toolkit.Uwp.Notifications" Version="8.0.2" />
 	</ItemGroup>
 	<ItemGroup>
 		<Page Include="**\*.xaml" Exclude="bin\**\*.xaml;obj\**\*.xaml" />
@@ -72,8 +72,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
-		<PackageReference Include="Uno.WinUI" Version="5.0.64" />
+		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
+		<PackageReference Include="Uno.WinUI" Version="5.6.33" />
 	</ItemGroup>
 
 </Project>
